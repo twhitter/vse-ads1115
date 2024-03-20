@@ -1,4 +1,4 @@
-from core import (hmm)
+from adc import (hmm)
 
 print("success")
 

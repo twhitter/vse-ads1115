@@ -88,3 +88,10 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# Saved Data Files
+/sample/chan1_cal.pickle
+/sample/chan2_cal.pickle
+/sample/chan3_cal.pickle
+/sample/chan4_cal.pickle
+/sample/chan5_cal.pickle
