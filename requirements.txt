@@ -1,2 +1,6 @@
-nose
-sphinx
+#Packages needed
+guizero
+pillow
+adafruit-python-shell
+Adafruit-Blinka
+adafruit-circuitpython-ads1x15

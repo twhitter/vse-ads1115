@@ -1,1 +1,4 @@
-from .core import hmm
+from core import (hmm)
+
+print("success")
+
