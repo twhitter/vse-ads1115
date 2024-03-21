@@ -1,3 +1,4 @@
+# from app_windows import *
 # Built-in Libraries
 import random
 import pickle
@@ -6,7 +7,7 @@ import pickle
 from guizero import *
 
 # User Libraries
-from adc import *
+# from adc import *
 
 
 def open_cal_window():
@@ -41,11 +42,17 @@ def reset_chan1_cal():
 
 
 def pickle_values():
-    pickle.dump(P1, open("chan1_cal.pickle", "wb"))
-    pickle.dump(P2, open("chan2_cal.pickle", "wb"))
-    pickle.dump(Px, open("chan3_cal.pickle", "wb"))
-    pickle.dump(Py, open("chan4_cal.pickle", "wb"))
-    pickle.dump(Pc, open("chan5_cal.pickle", "wb"))
+    with open("chan1_cal.pickle", "wb") as chan1_cal_storage:
+        pickle.dump(P1, chan1_cal_storage)
+    with open("chan2_cal.pickle", "wb") as chan2_cal_storage:
+        pickle.dump(P2, chan2_cal_storage)
+    with open("chan3_cal.pickle", "wb") as chan3_cal_storage:
+        pickle.dump(Px, chan3_cal_storage)
+    with open("chan4_cal.pickle", "wb") as chan4_cal_storage:
+        pickle.dump(Py, chan4_cal_storage)
+    with open("chan5_cal.pickle", "wb") as chan5_cal_storage:
+        pickle.dump(Pc, chan5_cal_storage)
+
 
 
 def save_chan1_cal():
@@ -53,11 +60,16 @@ def save_chan1_cal():
     P1.slope = float(chan1_slope.value)
     pickle_values()
 
+
 def save_chan2_cal():
     P2.offset = float(chan2_offset.value)
     P2.slope = float(chan2_slope.value)
     pickle_values()
 
+def save_chan3_cal():
+    Px.offset = float(chan2_offset.value)
+    Px.slope = float(chan2_slope.value)
+    pickle_values()
 
 def save_cal():
     P1.offset = float(chan1_offset.value)
@@ -74,10 +86,16 @@ def all_channel_update():
     # Update the channel values
     P1.get_chan_value()
     P2.get_chan_value()
+    Px.get_chan_value()
+    Py.get_chan_value()
+    Pc.get_chan_value()
 
     # Update the GUI values
     chan1_value.value = P1.channel_value
     chan2_value.value = P2.channel_value
+    # chan3_value.value = Px.channel_value
+    # chan4_value.value = Py.channel_value
+    # chan5_value.value = Pc.channel_value
 
 
 def delta_update():
@@ -111,6 +129,8 @@ class ChanADC:
 
         return self.channel_value
 
+    def get_cal_data(self):
+        return self.slope, self.offset
 
 class Deltas:
     def __init__(self, mag1, mag2):
@@ -141,19 +161,46 @@ class ChanBox:
 
 # Setup our main adc channels
 try:
-    pickle_file = open("chan1_cal.pickle", 'rb')
-    P1 = pickle.load(pickle_file)
-    pickle_file.close()
-    P1.slope = float(P1.slope)
-    P1.offset = float(P1.offset)
+    with open("chan1_cal.pickle", 'rb') as pickle_file:
+        P1 = pickle.load(pickle_file)
 except:
     P1 = ChanADC(0)
 
+# try:
+#     with open("chan2_cal.pickle", 'rb') as pickle_file:
+#         P2_temp = pickle.load(pickle_file)
+#
+#     P1 = P2_temp
+# except:
+#     P1 = ChanADC(0)
+#
+# try:
+#     with open("chan1_cal.pickle", 'rb') as pickle_file:
+#         P1_temp = pickle.load(pickle_file)
+#
+#     P1 = P1_temp
+# except:
+#     P1 = ChanADC(0)
+#
+# try:
+#     with open("chan1_cal.pickle", 'rb') as pickle_file:
+#         P1_temp = pickle.load(pickle_file)
+#
+#     P1 = P1_temp
+# except:
+#     P1 = ChanADC(0)
+#
+# try:
+#     with open("chan1_cal.pickle", 'rb') as pickle_file:
+#         P1_temp = pickle.load(pickle_file)
+#
+#     P1 = P1_temp
+# except:
+#     P1 = ChanADC(0)
 P2 = ChanADC(1)
 Px = ChanADC(2)
 Py = ChanADC(3)
 Pc = ChanADC(4)
-
 
 # Create main app window, everything lives in here
 app = App(title="Pressure Transducer Display Module")
@@ -333,7 +380,7 @@ chan1_padding4 = Text(chan1_cal_box, grid=[9, 0])
 chan1_padding4.width = entry_box_pad_x * 10
 
 chan1_offset = TextBox(chan1_cal_box, grid=[10, 0], width=entry_box_width)
-chan1_offset.value = str(P1.offset) * 5
+chan1_offset.value = str(P1.offset)
 
 chan1_padding5 = Text(chan1_cal_box, grid=[11, 0])
 chan1_padding5.width = entry_box_pad_x * 5
@@ -366,12 +413,45 @@ chan2_padding4 = Text(chan2_cal_box, grid=[9, 0])
 chan2_padding4.width = entry_box_pad_x * 10
 
 chan2_offset = TextBox(chan2_cal_box, grid=[10, 0], width=entry_box_width)
-chan2_offset.value = str(P2.offset) * 5
+chan2_offset.value = str(P2.offset)
 
 chan2_padding5 = Text(chan2_cal_box, grid=[11, 0])
 chan2_padding5.width = entry_box_pad_x * 5
 
 chan2_save = PushButton(chan2_cal_box, grid=[12, 0], command=save_chan2_cal, text="Save Chan. 2 Adjustment")
+
+# Setup channel 3 cal entry
+chan3_name = Text(chan3_cal_box, grid=[0, 0])
+chan3_name.value = "P2:"
+
+chan3_padding1 = Text(chan3_cal_box, grid=[1, 0])
+chan3_padding1.width = entry_box_pad_x
+
+chan3_value = Text(chan3_cal_box, grid=[2, 0], width=10)
+chan3_value.value = str(P2.channel_value)
+
+chan3_padding2 = Text(chan3_cal_box, grid=[3, 0])
+chan3_padding2.width = entry_box_pad_x
+
+chan3_unit = Text(chan3_cal_box, grid=[4, 0])
+chan3_unit.value = standard_unit
+
+chan3_padding3 = Text(chan3_cal_box, grid=[5, 0])
+chan3_padding3.width = entry_box_pad_x * 5
+
+chan3_slope = TextBox(chan3_cal_box, grid=[6, 0], width=entry_box_width)
+chan3_slope.value = str(P2.slope)
+
+chan3_padding4 = Text(chan3_cal_box, grid=[9, 0])
+chan3_padding4.width = entry_box_pad_x * 10
+
+chan3_offset = TextBox(chan3_cal_box, grid=[10, 0], width=entry_box_width)
+chan3_offset.value = str(P2.offset)
+
+chan3_padding5 = Text(chan3_cal_box, grid=[11, 0])
+chan3_padding5.width = entry_box_pad_x * 5
+
+chan3_save = PushButton(chan3_cal_box, grid=[12, 0], command=save_chan3_cal, text="Save Chan. 3 Adjustment")
 
 # Buttons for calibration window
 cal_buttons = Box(calibration, layout="grid")
@@ -387,3 +467,34 @@ cal_box_padding_2 = Text(cal_buttons, grid=[3, 0], width=1)
 
 exit_cal_button = PushButton(cal_buttons, grid=[4, 0], command=close_cal_window, text="Exit to Main Windows")
 exit_cal_button.align = "left"
+
+# The real program starts here
+
+# Get ADC outputs from channels
+P1.adc_out = round(float(random.randint(40, 1500)), 2)
+P2.adc_out = round(float(random.randint(40, 1500)), 2)
+Px.adc_out = round(float(random.randint(40, 1500)), 2)
+Py.adc_out = round(float(random.randint(40, 1500)), 2)
+Pc.adc_out = round(float(random.randint(40, 1500)), 2)
+
+# Get calibrated channel values from ADC
+P1.get_chan_value()
+P2.get_chan_value()
+Px.get_chan_value()
+Py.get_chan_value()
+Pc.get_chan_value()
+
+# Set delta values in their respective boxes
+delta1_magnitude.value = Deltas(P1.channel_value, P2.channel_value).getDelta()
+delta2_magnitude.value = Deltas(Px.channel_value, Pc.channel_value).getDelta()
+delta3_magnitude.value = Deltas(Px.channel_value, Py.channel_value).getDelta()
+delta4_magnitude.value = Deltas(Py.channel_value, Px.channel_value).getDelta() * Deltas(Py, Px).conversion_value
+
+# Job to update transducer values for both windows every update_time (in milliseconds)
+update_time = 1000
+
+calibration.repeat(update_time, all_channel_update)
+app.repeat(update_time, delta_update)
+
+# Main loop for program
+app.display()
