@@ -6,6 +6,7 @@ import pickle
 # Libraries from PyPi
 from guizero import *
 
+
 # User Libraries
 # from adc import *
 
@@ -30,15 +31,30 @@ def reset_cal():
 
     P2.offset = 0
     P2.slope = 1
-    chan2_offset.value = P1.offset
-    chan2_slope.value = P1.slope
+    chan2_offset.value = P2.offset
+    chan2_slope.value = P2.slope
+
+    Px.offset = 0
+    Px.slope = 1
+    chan3_offset.value = Px.offset
+    chan3_slope.value = Px.slope
+
+    Py.offset = 0
+    Py.slope = 1
+    chan4_offset.value = Py.offset
+    chan4_slope.value = Py.slope
+
+    Pc.offset = 0
+    Pc.slope = 1
+    chan5_offset.value = Pc.offset
+    chan5_slope.value = Pc.slope
 
 
-def reset_chan1_cal():
-    P1.offset = P1.offset_default
-    P1.slope = P1.slope_default
-    chan1_offset.value = P1.offset
-    chan1_slope.value = P1.slope
+# def reset_chan1_cal():
+#     P1.offset = P1.offset_default
+#     P1.slope = P1.slope_default
+#     chan1_offset.value = P1.offset
+#     chan1_slope.value = P1.slope
 
 
 def pickle_values():
@@ -54,7 +70,6 @@ def pickle_values():
         pickle.dump(Pc, chan5_cal_storage)
 
 
-
 def save_chan1_cal():
     P1.offset = float(chan1_offset.value)
     P1.slope = float(chan1_slope.value)
@@ -66,14 +81,28 @@ def save_chan2_cal():
     P2.slope = float(chan2_slope.value)
     pickle_values()
 
+
 def save_chan3_cal():
-    Px.offset = float(chan2_offset.value)
-    Px.slope = float(chan2_slope.value)
+    Px.offset = float(chan3_offset.value)
+    Px.slope = float(chan3_slope.value)
     pickle_values()
 
-def save_cal():
-    P1.offset = float(chan1_offset.value)
-    P1.slope = float(chan1_slope.value)
+
+def save_chan4_cal():
+    Py.offset = float(chan4_offset.value)
+    Py.slope = float(chan4_slope.value)
+    pickle_values()
+
+
+def save_chan5_cal():
+    Pc.offset = float(chan5_offset.value)
+    Pc.slope = float(chan5_slope.value)
+    pickle_values()
+
+
+# def save_cal():
+#     P1.offset = float(chan1_offset.value)
+#     P1.slope = float(chan1_slope.value)
 
 
 def all_channel_update():
@@ -83,7 +112,7 @@ def all_channel_update():
     Py.adc_out = round(float(random.randint(40, 1500)), 2)
     Pc.adc_out = round(float(random.randint(40, 1500)), 2)
 
-    # Update the channel values
+    # Update the physical channel values
     P1.get_chan_value()
     P2.get_chan_value()
     Px.get_chan_value()
@@ -93,9 +122,9 @@ def all_channel_update():
     # Update the GUI values
     chan1_value.value = P1.channel_value
     chan2_value.value = P2.channel_value
-    # chan3_value.value = Px.channel_value
-    # chan4_value.value = Py.channel_value
-    # chan5_value.value = Pc.channel_value
+    chan3_value.value = Px.channel_value
+    chan4_value.value = Py.channel_value
+    chan5_value.value = Pc.channel_value
 
 
 def delta_update():
@@ -132,6 +161,7 @@ class ChanADC:
     def get_cal_data(self):
         return self.slope, self.offset
 
+
 class Deltas:
     def __init__(self, mag1, mag2):
         self.mag1 = mag1
@@ -166,41 +196,42 @@ try:
 except:
     P1 = ChanADC(0)
 
-# try:
-#     with open("chan2_cal.pickle", 'rb') as pickle_file:
-#         P2_temp = pickle.load(pickle_file)
-#
-#     P1 = P2_temp
-# except:
-#     P1 = ChanADC(0)
-#
-# try:
-#     with open("chan1_cal.pickle", 'rb') as pickle_file:
-#         P1_temp = pickle.load(pickle_file)
-#
-#     P1 = P1_temp
-# except:
-#     P1 = ChanADC(0)
-#
-# try:
-#     with open("chan1_cal.pickle", 'rb') as pickle_file:
-#         P1_temp = pickle.load(pickle_file)
-#
-#     P1 = P1_temp
-# except:
-#     P1 = ChanADC(0)
-#
-# try:
-#     with open("chan1_cal.pickle", 'rb') as pickle_file:
-#         P1_temp = pickle.load(pickle_file)
-#
-#     P1 = P1_temp
-# except:
-#     P1 = ChanADC(0)
-P2 = ChanADC(1)
-Px = ChanADC(2)
-Py = ChanADC(3)
-Pc = ChanADC(4)
+try:
+    with open("chan2_cal.pickle", 'rb') as pickle_file:
+        P2_temp = pickle.load(pickle_file)
+
+    P2 = P2_temp
+except:
+    P2 = ChanADC(1)
+
+try:
+    with open("chan3_cal.pickle", 'rb') as pickle_file:
+        Px_temp = pickle.load(pickle_file)
+
+    Px = Px_temp
+except:
+    Px = ChanADC(2)
+
+try:
+    with open("chan4_cal.pickle", 'rb') as pickle_file:
+        Py_temp = pickle.load(pickle_file)
+
+    Py = Py_temp
+except:
+    Py = ChanADC(3)
+
+try:
+    with open("chan5_cal.pickle", 'rb') as pickle_file:
+        Pc_temp = pickle.load(pickle_file)
+
+    Pc = Pc_temp
+except:
+    Pc = ChanADC(4)
+
+# P2 = ChanADC(1)
+# Px = ChanADC(2)
+# Py = ChanADC(3)
+# Pc = ChanADC(4)
 
 # Create main app window, everything lives in here
 app = App(title="Pressure Transducer Display Module")
@@ -422,13 +453,13 @@ chan2_save = PushButton(chan2_cal_box, grid=[12, 0], command=save_chan2_cal, tex
 
 # Setup channel 3 cal entry
 chan3_name = Text(chan3_cal_box, grid=[0, 0])
-chan3_name.value = "P2:"
+chan3_name.value = "Px:"
 
 chan3_padding1 = Text(chan3_cal_box, grid=[1, 0])
 chan3_padding1.width = entry_box_pad_x
 
 chan3_value = Text(chan3_cal_box, grid=[2, 0], width=10)
-chan3_value.value = str(P2.channel_value)
+chan3_value.value = str(Px.channel_value)
 
 chan3_padding2 = Text(chan3_cal_box, grid=[3, 0])
 chan3_padding2.width = entry_box_pad_x
@@ -440,18 +471,84 @@ chan3_padding3 = Text(chan3_cal_box, grid=[5, 0])
 chan3_padding3.width = entry_box_pad_x * 5
 
 chan3_slope = TextBox(chan3_cal_box, grid=[6, 0], width=entry_box_width)
-chan3_slope.value = str(P2.slope)
+chan3_slope.value = str(Px.slope)
 
 chan3_padding4 = Text(chan3_cal_box, grid=[9, 0])
 chan3_padding4.width = entry_box_pad_x * 10
 
 chan3_offset = TextBox(chan3_cal_box, grid=[10, 0], width=entry_box_width)
-chan3_offset.value = str(P2.offset)
+chan3_offset.value = str(Px.offset)
 
 chan3_padding5 = Text(chan3_cal_box, grid=[11, 0])
 chan3_padding5.width = entry_box_pad_x * 5
 
 chan3_save = PushButton(chan3_cal_box, grid=[12, 0], command=save_chan3_cal, text="Save Chan. 3 Adjustment")
+
+# Setup channel 4 cal entry
+chan4_name = Text(chan4_cal_box, grid=[0, 0])
+chan4_name.value = "Py:"
+
+chan4_padding1 = Text(chan4_cal_box, grid=[1, 0])
+chan4_padding1.width = entry_box_pad_x
+
+chan4_value = Text(chan4_cal_box, grid=[2, 0], width=10)
+chan4_value.value = str(Py.channel_value)
+
+chan4_padding2 = Text(chan4_cal_box, grid=[3, 0])
+chan4_padding2.width = entry_box_pad_x
+
+chan4_unit = Text(chan4_cal_box, grid=[4, 0])
+chan4_unit.value = standard_unit
+
+chan4_padding3 = Text(chan4_cal_box, grid=[5, 0])
+chan4_padding3.width = entry_box_pad_x * 5
+
+chan4_slope = TextBox(chan4_cal_box, grid=[6, 0], width=entry_box_width)
+chan4_slope.value = str(Py.slope)
+
+chan4_padding4 = Text(chan4_cal_box, grid=[9, 0])
+chan4_padding4.width = entry_box_pad_x * 10
+
+chan4_offset = TextBox(chan4_cal_box, grid=[10, 0], width=entry_box_width)
+chan4_offset.value = str(Py.offset)
+
+chan4_padding5 = Text(chan4_cal_box, grid=[11, 0])
+chan4_padding5.width = entry_box_pad_x * 5
+
+chan4_save = PushButton(chan4_cal_box, grid=[12, 0], command=save_chan4_cal, text="Save Chan. 4 Adjustment")
+
+# Setup channel 5 cal entry
+chan5_name = Text(chan5_cal_box, grid=[0, 0])
+chan5_name.value = "Pc:"
+
+chan5_padding1 = Text(chan5_cal_box, grid=[1, 0])
+chan5_padding1.width = entry_box_pad_x
+
+chan5_value = Text(chan5_cal_box, grid=[2, 0], width=10)
+chan5_value.value = str(Pc.channel_value)
+
+chan5_padding2 = Text(chan5_cal_box, grid=[3, 0])
+chan5_padding2.width = entry_box_pad_x
+
+chan5_unit = Text(chan5_cal_box, grid=[4, 0])
+chan5_unit.value = standard_unit
+
+chan5_padding3 = Text(chan5_cal_box, grid=[5, 0])
+chan5_padding3.width = entry_box_pad_x * 5
+
+chan5_slope = TextBox(chan5_cal_box, grid=[6, 0], width=entry_box_width)
+chan5_slope.value = str(Pc.slope)
+
+chan5_padding4 = Text(chan5_cal_box, grid=[9, 0])
+chan5_padding4.width = entry_box_pad_x * 10
+
+chan5_offset = TextBox(chan5_cal_box, grid=[10, 0], width=entry_box_width)
+chan5_offset.value = str(Pc.offset)
+
+chan5_padding5 = Text(chan5_cal_box, grid=[11, 0])
+chan5_padding5.width = entry_box_pad_x * 5
+
+chan5_save = PushButton(chan5_cal_box, grid=[12, 0], command=save_chan5_cal, text="Save Chan. 5 Adjustment")
 
 # Buttons for calibration window
 cal_buttons = Box(calibration, layout="grid")
