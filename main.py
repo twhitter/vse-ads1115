@@ -2,13 +2,17 @@
 # Built-in Libraries
 import random
 import pickle
+import board
+import busio
+import time
+import adafruit_ads1x15.ads1115 as ADS
 
-# Libraries from PyPi
+from adafruit_ads1x15.analog_in import AnalogIn
 from guizero import *
 
-
-# User Libraries
-# from adc import *
+i2c = busio.I2C(board.SCL, board.SDA)
+ads = ADS.ADS1115(i2c)
+chan = AnalogIn(ads, ADS.P0)
 
 
 def open_cal_window():
@@ -48,6 +52,8 @@ def reset_cal():
     Pc.slope = 1
     chan5_offset.value = Pc.offset
     chan5_slope.value = Pc.slope
+
+    pickle_values()
 
 
 # def reset_chan1_cal():
@@ -582,7 +588,8 @@ Py.get_chan_value()
 Pc.get_chan_value()
 
 # Set delta values in their respective boxes
-delta1_magnitude.value = Deltas(P1.channel_value, P2.channel_value).getDelta()
+#delta1_magnitude.value = Deltas(P1.channel_value, P2.channel_value).getDelta()
+delta1_magnitude.value = chan.value
 delta2_magnitude.value = Deltas(Px.channel_value, Pc.channel_value).getDelta()
 delta3_magnitude.value = Deltas(Px.channel_value, Py.channel_value).getDelta()
 delta4_magnitude.value = Deltas(Py.channel_value, Px.channel_value).getDelta() * Deltas(Py, Px).conversion_value
