@@ -340,24 +340,24 @@ entry_box_pad_x = 1
 cal_label_text_size = 15
 
 # Make box objects for holding cals
-cal_top_box = Box(calibration, width="fill", height="fill", border=True)
+cal_top_box = Box(calibration, width="fill", height="fill", border=False)
 
-chan_cal_label_box = Box(cal_top_box, layout="grid", width="fill", height=entry_box_height, border=True)
+chan_cal_label_box = Box(cal_top_box, layout="grid", width="fill", height=entry_box_height, border=False)
 cal_label_box_pad = Box(cal_top_box, width="fill", height=entry_box_pad_y, border=False)
 
-chan1_cal_box = Box(cal_top_box, layout="grid", width="fill", height=entry_box_height, border=True)
+chan1_cal_box = Box(cal_top_box, layout="grid", width="fill", height=entry_box_height, border=False)
 chan1_cal_box_pad = Box(cal_top_box, width="fill", height=entry_box_pad_y, border=False)
 
-chan2_cal_box = Box(cal_top_box, layout="grid", width="fill", height=entry_box_height, border=True)
+chan2_cal_box = Box(cal_top_box, layout="grid", width="fill", height=entry_box_height, border=False)
 chan2_cal_box_pad = Box(cal_top_box, width="fill", height=entry_box_pad_y, border=False)
 
-chan3_cal_box = Box(cal_top_box, layout="grid", width="fill", height=entry_box_height, border=True)
+chan3_cal_box = Box(cal_top_box, layout="grid", width="fill", height=entry_box_height, border=False)
 chan3_cal_box_pad = Box(cal_top_box, width="fill", height=entry_box_pad_y, border=False)
 
-chan4_cal_box = Box(cal_top_box, layout="grid", width="fill", height=entry_box_height, border=True)
+chan4_cal_box = Box(cal_top_box, layout="grid", width="fill", height=entry_box_height, border=False)
 chan4_cal_box_pad = Box(cal_top_box, width="fill", height=entry_box_pad_y, border=False)
 
-chan5_cal_box = Box(cal_top_box, layout="grid", width="fill", height=entry_box_height, border=True)
+chan5_cal_box = Box(cal_top_box, layout="grid", width="fill", height=entry_box_height, border=False)
 chan5_cal_box_pad = Box(cal_top_box, width="fill", height=entry_box_pad_y, border=False)
 
 # Setup channel cal top line (labels)
@@ -549,7 +549,7 @@ chan5_save = PushButton(chan5_cal_box, grid=[12, 0], command=save_chan5_cal, tex
 
 # Buttons for calibration window
 cal_buttons = Box(calibration, layout="grid")
-cal_buttons.border = True
+cal_buttons.border = False
 cal_buttons.align = "bottom"
 
 cal_box_padding_1 = Text(cal_buttons, grid=[1, 0], width=1)
