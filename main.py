@@ -358,7 +358,7 @@ chan1_padding1 = Text(chan1_cal_box, grid=[1, 0])
 chan1_padding1.width = entry_box_pad_x
 
 chan1_value = Text(chan1_cal_box, grid=[2, 0], width=10)
-chan1_value.value = str(P1.channel_value)
+chan1_value.value = str(P1.channel_pressure)
 
 chan1_padding2 = Text(chan1_cal_box, grid=[3, 0])
 chan1_padding2.width = entry_box_pad_x
@@ -391,7 +391,7 @@ chan2_padding1 = Text(chan2_cal_box, grid=[1, 0])
 chan2_padding1.width = entry_box_pad_x
 
 chan2_value = Text(chan2_cal_box, grid=[2, 0], width=10)
-chan2_value.value = str(P2.channel_value)
+chan2_value.value = str(P2.channel_pressure)
 
 chan2_padding2 = Text(chan2_cal_box, grid=[3, 0])
 chan2_padding2.width = entry_box_pad_x
@@ -424,7 +424,7 @@ chan3_padding1 = Text(chan3_cal_box, grid=[1, 0])
 chan3_padding1.width = entry_box_pad_x
 
 chan3_value = Text(chan3_cal_box, grid=[2, 0], width=10)
-chan3_value.value = str(Px.channel_value)
+chan3_value.value = str(Px.channel_pressure)
 
 chan3_padding2 = Text(chan3_cal_box, grid=[3, 0])
 chan3_padding2.width = entry_box_pad_x
@@ -457,7 +457,7 @@ chan4_padding1 = Text(chan4_cal_box, grid=[1, 0])
 chan4_padding1.width = entry_box_pad_x
 
 chan4_value = Text(chan4_cal_box, grid=[2, 0], width=10)
-chan4_value.value = str(Py.channel_value)
+chan4_value.value = str(Py.channel_pressure)
 
 chan4_padding2 = Text(chan4_cal_box, grid=[3, 0])
 chan4_padding2.width = entry_box_pad_x
@@ -490,7 +490,7 @@ chan5_padding1 = Text(chan5_cal_box, grid=[1, 0])
 chan5_padding1.width = entry_box_pad_x
 
 chan5_value = Text(chan5_cal_box, grid=[2, 0], width=10)
-chan5_value.value = str(Pc.channel_value)
+chan5_value.value = str(Pc.channel_pressure)
 
 chan5_padding2 = Text(chan5_cal_box, grid=[3, 0])
 chan5_padding2.width = entry_box_pad_x
