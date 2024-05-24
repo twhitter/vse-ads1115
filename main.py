@@ -21,22 +21,36 @@ def close_app():
 
 def reset_cal():
 
-    chan1_offset.value = P1.offset_default
-    chan1_slope.value = P1.slope_default
+    P1.offset = P1.offset_default
+    P1.slope = P1.slope_default
 
-    chan2_offset.value = P2.offset_default
-    chan2_slope.value = P2.slope_default
+    P2.offset = P2.offset_default
+    P2.slope = P2.slope_default
 
-    chan3_offset.value = Px.offset_default
-    chan3_slope.value = Px.slope_default
+    Px.offset = Px.offset_default
+    Px.slope = Px.slope_default
 
-    chan4_offset.value = Py.offset_default
-    chan4_slope.value = Py.slope_default
+    Py.offset = Py.offset_default
+    Py.slope = Py.slope_default
 
-    chan5_offset.value = Pc.offset_default
-    chan5_slope.value = Pc.slope_default
+    Pc.offset = Pc.offset_default
+    Pc.slope = Pc.slope_default
 
     pickle_values()
+    # chan1_offset.value = P1.offset
+    # chan1_slope.value = P1.slope_default
+    #
+    # chan2_offset.value = P2.offset_default
+    # chan2_slope.value = P2.slope_default
+    #
+    # chan3_offset.value = Px.offset_default
+    # chan3_slope.value = Px.slope_default
+    #
+    # chan4_offset.value = Py.offset_default
+    # chan4_slope.value = Py.slope_default
+    #
+    # chan5_offset.value = Pc.offset_default
+    # chan5_slope.value = Pc.slope_default
 
 
 def pickle_values():
@@ -159,7 +173,6 @@ class Deltas:
 
         return self.delta
 
-    # def setBoxName(self, name):
 
 i2c = busio.I2C(board.SCL, board.SDA)
 ads1 = ADS.ADS1115(i2c, address=0x48)
