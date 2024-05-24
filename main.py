@@ -106,10 +106,10 @@ def all_channel_update():
 
 
 def delta_update():
-    delta1_magnitude.value = Deltas(P1.channel_pressure, P2.channel_pressure).getDelta()
-    delta2_magnitude.value = Deltas(Px.channel_pressure, Pc.channel_pressure).getDelta()
-    delta3_magnitude.value = Deltas(Px.channel_pressure, Py.channel_pressure).getDelta()
-    delta4_magnitude.value = Deltas(Py.channel_pressure, Px.channel_pressure).getDelta() * Deltas(Py, Px).conversion_value
+    delta1_magnitude.value = round(Deltas(P1.channel_pressure, P2.channel_pressure).getDelta(), 7)
+    delta2_magnitude.value = round(Deltas(Px.channel_pressure, Pc.channel_pressure).getDelta(), 7)
+    delta3_magnitude.value = round(Deltas(Px.channel_pressure, Py.channel_pressure).getDelta(), 7)
+    delta4_magnitude.value = round(Deltas(Py.channel_pressure, Px.channel_pressure).getDelta() * Deltas(Py, Px).conversion_value, 7)
 
 
 class ChanADC:
