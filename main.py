@@ -122,7 +122,7 @@ def delta_update():
     delta2.getDelta()
     delta3.getDelta()
     delta4.getDelta()
-    
+
     delta1_magnitude.value = round(delta1.delta, 7)
     delta2_magnitude.value = round(delta2.delta, 7)
     delta3_magnitude.value = round(delta3.delta, 7)
@@ -210,10 +210,11 @@ try:
 except:
     Pc = ChanADC()
 
-    delta1 = Deltas(P1.channel_pressure, P2.channel_pressure)
-    delta2 = Deltas(Px.channel_pressure, Pc.channel_pressure)
-    delta3 = Deltas(Px.channel_pressure, Py.channel_pressure)
-    delta4 = Deltas(Py.channel_pressure, Px.channel_pressure)
+
+delta1 = Deltas(P1.channel_pressure, P2.channel_pressure)
+delta2 = Deltas(Px.channel_pressure, Pc.channel_pressure)
+delta3 = Deltas(Px.channel_pressure, Py.channel_pressure)
+delta4 = Deltas(Py.channel_pressure, Px.channel_pressure)
 
 # Create main app window, everything lives in here
 app = App(title="Pressure Transducer Display Module")
