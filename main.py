@@ -323,7 +323,7 @@ exit_button = PushButton(button_box, grid=[2, 0], command=close_app, text="Exit 
 
 # Setup calibration window
 calibration = Window(app, title="Transducer Calibration/Offset")
-calibration.width = 800
+calibration.width = 1000
 calibration.height = 500
 calibration.hide()
 
