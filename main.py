@@ -37,20 +37,21 @@ def reset_cal():
     Pc.slope = Pc.slope_default
 
     pickle_values()
-    # chan1_offset.value = P1.offset
-    # chan1_slope.value = P1.slope_default
-    #
-    # chan2_offset.value = P2.offset_default
-    # chan2_slope.value = P2.slope_default
-    #
-    # chan3_offset.value = Px.offset_default
-    # chan3_slope.value = Px.slope_default
-    #
-    # chan4_offset.value = Py.offset_default
-    # chan4_slope.value = Py.slope_default
-    #
-    # chan5_offset.value = Pc.offset_default
-    # chan5_slope.value = Pc.slope_default
+
+    chan1_offset.value = P1.offset
+    chan1_slope.value = P1.slope
+
+    chan2_offset.value = P2.offset
+    chan2_slope.value = P2.slope
+
+    chan3_offset.value = Px.offset
+    chan3_slope.value = Px.slope
+
+    chan4_offset.value = Py.offset
+    chan4_slope.value = Py.slope
+
+    chan5_offset.value = Pc.offset
+    chan5_slope.value = Pc.slope
 
 
 def pickle_values():
