@@ -98,11 +98,11 @@ def all_channel_update():
     Pc.get_pressure()
 
     # Update the GUI values
-    chan1_value.value = P1.channel_pressure
-    chan2_value.value = P2.channel_pressure
-    chan3_value.value = Px.channel_pressure
-    chan4_value.value = Py.channel_pressure
-    chan5_value.value = Pc.channel_pressure
+    chan1_value.value = round(P1.channel_pressure, 7)
+    chan2_value.value = round(P2.channel_pressure, 7)
+    chan3_value.value = round(Px.channel_pressure, 7)
+    chan4_value.value = round(Py.channel_pressure, 7)
+    chan5_value.value = round(Pc.channel_pressure, 7)
 
 
 def delta_update():
@@ -535,7 +535,7 @@ all_channel_update()
 delta_update()
 
 # Job to update transducer values for both windows every update_time (in milliseconds)
-update_time = 1000
+update_time = 500
 
 calibration.repeat(update_time, all_channel_update)
 app.repeat(update_time, delta_update)
