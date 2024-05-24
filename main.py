@@ -237,19 +237,19 @@ app.width = 1200
 app.height = 900
 
 # Create padding for deltas top box
-top_pad_app = Box(app, align="top", height=75, width="fill", border=True)
-left_pad_app = Box(app, align="left", height="fill", width=75, border=True)
-right_pad_app = Box(app, align="right", height="fill", width=75, border=True)
-bottom_pad_app = Box(app, align="bottom", height=75, width="fill", border=True)
+top_pad_app = Box(app, align="top", height=75, width="fill", border=False)
+left_pad_app = Box(app, align="left", height="fill", width=75, border=False)
+right_pad_app = Box(app, align="right", height="fill", width=75, border=False)
+bottom_pad_app = Box(app, align="bottom", height=75, width="fill", border=False)
 
 # Make box objects for holding pressure deltas
-delta_top_box = Box(app, layout="grid", border=True)
+delta_top_box = Box(app, layout="grid", border=False)
 delta1_box = Box(delta_top_box, grid=[0, 0], width=500, height=300, border=True)
-delta_12_box_padding = Box(delta_top_box, grid=[1, 0], width=50, height=50, border=True)
+delta_12_box_padding = Box(delta_top_box, grid=[1, 0], width=50, height=50, border=False)
 delta2_box = Box(delta_top_box, grid=[2, 0], width=500, height=300, border=True)
-delta_middle_box_padding = Box(delta_top_box, grid=[2, 1], width=50, height=50, border=True)
+delta_middle_box_padding = Box(delta_top_box, grid=[2, 1], width=50, height=50, border=False)
 delta3_box = Box(delta_top_box, grid=[0, 2], width=500, height=300, border=True)
-delta_34_box_padding = Box(delta_top_box, grid=[1, 2], width=50, height=50, border=True)
+delta_34_box_padding = Box(delta_top_box, grid=[1, 2], width=50, height=50, border=False)
 delta4_box = Box(delta_top_box, grid=[2, 2], width=500, height=300, border=True)
 
 delta_label_text_size = 35
@@ -316,21 +316,21 @@ delta4_magnitude.text_size = delta_magnitude_text_size
 delta4_magnitude.value = 0
 
 # Buttons for Main App window
-button_box = Box(app, layout="grid", border=True, align="bottom")
+button_box = Box(app, layout="grid", border=False, align="bottom")
 calibration_button = PushButton(button_box, grid=[0, 0], command=open_cal_window, text="Add Offset to Channels")
 button_box_padding = Text(button_box, grid=[1, 0], width=5)
 exit_button = PushButton(button_box, grid=[2, 0], command=close_app, text="Exit Program")
 
 # Setup calibration window
 calibration = Window(app, title="Transducer Calibration/Offset")
-calibration.width = 1000
+calibration.width = 900
 calibration.height = 500
 calibration.hide()
 
-top_pad_cal = Box(calibration, align="top", height=25, width="fill", border=True)
-bottom_pad_cal = Box(calibration, align="bottom", height=25, width="fill", border=True)
-left_pad_cal = Box(calibration, align="left", height="fill", width=25, border=True)
-right_pad_cal = Box(calibration, align="right", height="fill", width=25, border=True)
+top_pad_cal = Box(calibration, align="top", height=25, width="fill", border=False)
+bottom_pad_cal = Box(calibration, align="bottom", height=25, width="fill", border=False)
+left_pad_cal = Box(calibration, align="left", height="fill", width=25, border=False)
+right_pad_cal = Box(calibration, align="right", height="fill", width=25, border=False)
 
 entry_box_height = 50
 entry_box_width = 10
@@ -343,22 +343,22 @@ cal_label_text_size = 15
 cal_top_box = Box(calibration, width="fill", height="fill", border=True)
 
 chan_cal_label_box = Box(cal_top_box, layout="grid", width="fill", height=entry_box_height, border=True)
-cal_label_box_pad = Box(cal_top_box, width="fill", height=entry_box_pad_y, border=True)
+cal_label_box_pad = Box(cal_top_box, width="fill", height=entry_box_pad_y, border=False)
 
 chan1_cal_box = Box(cal_top_box, layout="grid", width="fill", height=entry_box_height, border=True)
-chan1_cal_box_pad = Box(cal_top_box, width="fill", height=entry_box_pad_y, border=True)
+chan1_cal_box_pad = Box(cal_top_box, width="fill", height=entry_box_pad_y, border=False)
 
 chan2_cal_box = Box(cal_top_box, layout="grid", width="fill", height=entry_box_height, border=True)
-chan2_cal_box_pad = Box(cal_top_box, width="fill", height=entry_box_pad_y, border=True)
+chan2_cal_box_pad = Box(cal_top_box, width="fill", height=entry_box_pad_y, border=False)
 
 chan3_cal_box = Box(cal_top_box, layout="grid", width="fill", height=entry_box_height, border=True)
-chan3_cal_box_pad = Box(cal_top_box, width="fill", height=entry_box_pad_y, border=True)
+chan3_cal_box_pad = Box(cal_top_box, width="fill", height=entry_box_pad_y, border=False)
 
 chan4_cal_box = Box(cal_top_box, layout="grid", width="fill", height=entry_box_height, border=True)
-chan4_cal_box_pad = Box(cal_top_box, width="fill", height=entry_box_pad_y, border=True)
+chan4_cal_box_pad = Box(cal_top_box, width="fill", height=entry_box_pad_y, border=False)
 
 chan5_cal_box = Box(cal_top_box, layout="grid", width="fill", height=entry_box_height, border=True)
-chan5_cal_box_pad = Box(cal_top_box, width="fill", height=entry_box_pad_y, border=True)
+chan5_cal_box_pad = Box(cal_top_box, width="fill", height=entry_box_pad_y, border=False)
 
 # Setup channel cal top line (labels)
 chan_label1 = Text(chan_cal_label_box, grid=[0, 0])
