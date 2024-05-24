@@ -1,18 +1,10 @@
-# from app_windows import *
-# Built-in Libraries
 import random
 import pickle
 import board
 import busio
-import time
 import adafruit_ads1x15.ads1115 as ADS
-
 from adafruit_ads1x15.analog_in import AnalogIn
 from guizero import *
-
-i2c = busio.I2C(board.SCL, board.SDA)
-ads = ADS.ADS1115(i2c)
-chan = AnalogIn(ads, ADS.P0)
 
 
 def open_cal_window():
@@ -28,39 +20,23 @@ def close_app():
 
 
 def reset_cal():
-    P1.offset = 0
-    P1.slope = 1
-    chan1_offset.value = P1.offset
-    chan1_slope.value = P1.slope
 
-    P2.offset = 0
-    P2.slope = 1
-    chan2_offset.value = P2.offset
-    chan2_slope.value = P2.slope
+    chan1_offset.value = P1.offset_default
+    chan1_slope.value = P1.slope_default
 
-    Px.offset = 0
-    Px.slope = 1
-    chan3_offset.value = Px.offset
-    chan3_slope.value = Px.slope
+    chan2_offset.value = P2.offset_default
+    chan2_slope.value = P2.slope_default
 
-    Py.offset = 0
-    Py.slope = 1
-    chan4_offset.value = Py.offset
-    chan4_slope.value = Py.slope
+    chan3_offset.value = Px.offset_default
+    chan3_slope.value = Px.slope_default
 
-    Pc.offset = 0
-    Pc.slope = 1
-    chan5_offset.value = Pc.offset
-    chan5_slope.value = Pc.slope
+    chan4_offset.value = Py.offset_default
+    chan4_slope.value = Py.slope_default
+
+    chan5_offset.value = Pc.offset_default
+    chan5_slope.value = Pc.slope_default
 
     pickle_values()
-
-
-# def reset_chan1_cal():
-#     P1.offset = P1.offset_default
-#     P1.slope = P1.slope_default
-#     chan1_offset.value = P1.offset
-#     chan1_slope.value = P1.slope
 
 
 def pickle_values():
@@ -106,63 +82,49 @@ def save_chan5_cal():
     pickle_values()
 
 
-# def save_cal():
-#     P1.offset = float(chan1_offset.value)
-#     P1.slope = float(chan1_slope.value)
-
-
 def all_channel_update():
-    P1.adc_out = round(float(random.randint(40, 1500)), 2)
-    P2.adc_out = round(float(random.randint(40, 1500)), 2)
-    Px.adc_out = round(float(random.randint(40, 1500)), 2)
-    Py.adc_out = round(float(random.randint(40, 1500)), 2)
-    Pc.adc_out = round(float(random.randint(40, 1500)), 2)
+    # Get ADC outputs from channels
+    P1.channel_voltage = adc1_chan2.voltage
+    P2.channel_voltage = adc1_chan1.voltage
+    Px.channel_voltage = adc1_chan0.voltage
+    Py.channel_voltage = adc1_chan3.voltage
+    Pc.channel_voltage = adc2_chan0.voltage
 
-    # Update the physical channel values
-    P1.get_chan_value()
-    P2.get_chan_value()
-    Px.get_chan_value()
-    Py.get_chan_value()
-    Pc.get_chan_value()
+    # Get calibrated channel values from ADC
+    P1.get_pressure()
+    P2.get_pressure()
+    Px.get_pressure()
+    Py.get_pressure()
+    Pc.get_pressure()
 
     # Update the GUI values
-    chan1_value.value = P1.channel_value
-    chan2_value.value = P2.channel_value
-    chan3_value.value = Px.channel_value
-    chan4_value.value = Py.channel_value
-    chan5_value.value = Pc.channel_value
+    chan1_value.value = P1.channel_pressure
+    chan2_value.value = P2.channel_pressure
+    chan3_value.value = Px.channel_pressure
+    chan4_value.value = Py.channel_pressure
+    chan5_value.value = Pc.channel_pressure
 
 
 def delta_update():
-    delta1_magnitude.value = Deltas(P1.channel_value, P2.channel_value).getDelta()
-    delta2_magnitude.value = Deltas(Px.channel_value, Pc.channel_value).getDelta()
-    delta3_magnitude.value = Deltas(Px.channel_value, Py.channel_value).getDelta()
-    delta4_magnitude.value = Deltas(Py.channel_value, Px.channel_value).getDelta() * Deltas(Py, Px).conversion_value
+    delta1_magnitude.value = Deltas(P1.channel_pressure, P2.channel_pressure).getDelta()
+    delta2_magnitude.value = Deltas(Px.channel_pressure, Pc.channel_pressure).getDelta()
+    delta3_magnitude.value = Deltas(Px.channel_pressure, Py.channel_pressure).getDelta()
+    delta4_magnitude.value = Deltas(Py.channel_pressure, Px.channel_pressure).getDelta() * Deltas(Py, Px).conversion_value
 
 
 class ChanADC:
 
-    def __init__(self, channel):
-        self.channel = channel
+    def __init__(self):
         self.offset_default = 0.0
-        self.slope_default = 1.0
-        self.offset = 0.0
-        self.slope = 1.0
-        self.adc_out = 0
-        self.channel_raw_value = 0.0
-        self.channel_value = 0.0
+        self.slope_default = 300.0
+        self.offset = self.offset_default
+        self.slope = self.slope_default # default transducer scaling for adc input
+        self.channel_voltage = 0.0
+        self.channel_pressure = 0.0
 
-    def channel_raw_value(self):
-        self.channel_raw_value = (self.adc_out * self.slope_default) + self.offset_default
+    def get_pressure(self):
+        self.channel_pressure = (self.channel_voltage * self.slope) + self.offset
 
-        return self.channel_raw_value
-
-    def get_chan_value(self):
-        self.channel_raw_value = (self.adc_out * self.slope_default) + self.offset_default
-
-        self.channel_value = (self.adc_out * self.slope) + self.offset
-
-        return self.channel_value
 
     def get_cal_data(self):
         return self.slope, self.offset
@@ -182,25 +144,22 @@ class Deltas:
 
     # def setBoxName(self, name):
 
+i2c = busio.I2C(board.SCL, board.SDA)
+ads1 = ADS.ADS1115(i2c, address=0x48)
+ads2 = ADS.ADS1115(i2c, address=0x49)
 
-class ChanBox:
-    def __init__(self, guizero_app, chan1, chan2):
-        self.app = guizero_app
-        self.chan1 = chan1
-        self.chan2 = chan2
-        self.box = None
-
-    def defBox(self):
-        self.box = Box(app, width="fill", align="top", border=True)
-        return self.box
-
+adc1_chan0 = AnalogIn(ads1, ADS.P0)
+adc1_chan1 = AnalogIn(ads1, ADS.P1)
+adc1_chan2 = AnalogIn(ads1, ADS.P2)
+adc1_chan3 = AnalogIn(ads1, ADS.P3)
+adc2_chan0 = AnalogIn(ads2, ADS.P0)
 
 # Setup our main adc channels
 try:
     with open("chan1_cal.pickle", 'rb') as pickle_file:
         P1 = pickle.load(pickle_file)
 except:
-    P1 = ChanADC(0)
+    P1 = ChanADC()
 
 try:
     with open("chan2_cal.pickle", 'rb') as pickle_file:
@@ -208,7 +167,7 @@ try:
 
     P2 = P2_temp
 except:
-    P2 = ChanADC(1)
+    P2 = ChanADC()
 
 try:
     with open("chan3_cal.pickle", 'rb') as pickle_file:
@@ -216,7 +175,7 @@ try:
 
     Px = Px_temp
 except:
-    Px = ChanADC(2)
+    Px = ChanADC()
 
 try:
     with open("chan4_cal.pickle", 'rb') as pickle_file:
@@ -224,7 +183,7 @@ try:
 
     Py = Py_temp
 except:
-    Py = ChanADC(3)
+    Py = ChanADC()
 
 try:
     with open("chan5_cal.pickle", 'rb') as pickle_file:
@@ -232,12 +191,8 @@ try:
 
     Pc = Pc_temp
 except:
-    Pc = ChanADC(4)
+    Pc = ChanADC()
 
-# P2 = ChanADC(1)
-# Px = ChanADC(2)
-# Py = ChanADC(3)
-# Pc = ChanADC(4)
 
 # Create main app window, everything lives in here
 app = App(title="Pressure Transducer Display Module")
@@ -334,7 +289,7 @@ exit_button = PushButton(button_box, grid=[2, 0], command=close_app, text="Exit 
 calibration = Window(app, title="Transducer Calibration/Offset")
 calibration.width = 800
 calibration.height = 500
-# calibration.hide()
+calibration.hide()
 
 top_pad_cal = Box(calibration, align="top", height=25, width="fill", border=True)
 bottom_pad_cal = Box(calibration, align="bottom", height=25, width="fill", border=True)
@@ -573,26 +528,11 @@ exit_cal_button.align = "left"
 
 # The real program starts here
 
-# Get ADC outputs from channels
-P1.adc_out = round(float(random.randint(40, 1500)), 2)
-P2.adc_out = round(float(random.randint(40, 1500)), 2)
-Px.adc_out = round(float(random.randint(40, 1500)), 2)
-Py.adc_out = round(float(random.randint(40, 1500)), 2)
-Pc.adc_out = round(float(random.randint(40, 1500)), 2)
-
-# Get calibrated channel values from ADC
-P1.get_chan_value()
-P2.get_chan_value()
-Px.get_chan_value()
-Py.get_chan_value()
-Pc.get_chan_value()
+# Get ADC outputs from channels and set boxes
+all_channel_update()
 
 # Set delta values in their respective boxes
-#delta1_magnitude.value = Deltas(P1.channel_value, P2.channel_value).getDelta()
-delta1_magnitude.value = chan.value
-delta2_magnitude.value = Deltas(Px.channel_value, Pc.channel_value).getDelta()
-delta3_magnitude.value = Deltas(Px.channel_value, Py.channel_value).getDelta()
-delta4_magnitude.value = Deltas(Py.channel_value, Px.channel_value).getDelta() * Deltas(Py, Px).conversion_value
+delta_update()
 
 # Job to update transducer values for both windows every update_time (in milliseconds)
 update_time = 1000
